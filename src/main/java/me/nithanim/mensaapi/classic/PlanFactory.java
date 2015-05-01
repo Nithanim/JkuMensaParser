@@ -14,7 +14,10 @@ public class PlanFactory {
             
             List<Menu> menus = new ArrayList<Menu>(5);
             for(Element menuItem : e.select(">.menu-item > table > tbody > tr")) {
-                menus.add(ClassicMenuFactory.newMenu(menuItem, price));
+                Menu menu = ClassicMenuFactory.newMenu(menuItem, price);
+                if(menu != null) {
+                    menus.add(menu);
+                }
             }
             return menus;
         } else if(name.equals("Choice")) {

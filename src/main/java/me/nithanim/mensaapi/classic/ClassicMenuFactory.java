@@ -21,7 +21,13 @@ public class ClassicMenuFactory {
         }
         
         boolean isVegetarian = isVegetarian(es.get(2));
-        return new Menu(Type.CLASSIC, null, courses, price, date, isVegetarian);
+        
+        
+        if(courses.get(1).getDesc().contains("Geschlossen")) {
+            return null;
+        } else {
+            return new Menu(Type.CLASSIC, null, courses, price, date, isVegetarian);
+        }
     }
     
     private static boolean isVegetarian(Element e) {
