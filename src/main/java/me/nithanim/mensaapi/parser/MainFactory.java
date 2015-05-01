@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.classic;
+package me.nithanim.mensaapi.parser;
 
 import java.util.LinkedList;
 import java.util.List;

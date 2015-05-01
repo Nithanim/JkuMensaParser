@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.List;
-import me.nithanim.mensaapi.classic.MainFactory;
+import me.nithanim.mensaapi.parser.MainFactory;
 import me.nithanim.mensaapi.common.Menu;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
