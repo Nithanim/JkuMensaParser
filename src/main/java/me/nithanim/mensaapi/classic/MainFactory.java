@@ -12,11 +12,12 @@ public class MainFactory {
         Elements offers = doc.select("html body div#wrapper div#menu");
         
         List<Menu> menus = new LinkedList<Menu>();
-        for(Element offer : offers) {
+        for(Element offer : offers) {  //Classic 1, Classic 2, Choice, M-Cafe, ...
             try {
                 menus.addAll(PlanFactory.newMenus(offer));
             } catch(IllegalArgumentException ex) {
-                System.out.println(ex.getMessage());
+                //Ignore all but Classic and Choice for now
+                //System.out.println(ex.getMessage());
             }
         }
         
