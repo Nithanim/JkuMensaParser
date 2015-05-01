@@ -1,5 +1,6 @@
 package me.nithanim.mensaapi.parser;
 
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +22,12 @@ public class ChoiceMenuFactory {
     public static List<Menu> newMenu(Element e) {
         Elements subtags = e.select("p");
         
-        String date = subtags.remove(0).text();
+        String date = handleWhitespacesAndTrim(subtags.remove(0).text());
+        try {
+            date = Util.parseTimeChoice(date);
+        } catch(ParseException ex) {
+            System.err.println("Unable to parse " + date + " for Choice!"); //print to err for now
+        }
         
         replaceAllImages(e);
         List<Node> nodes = getEssentialNodes(subtags);

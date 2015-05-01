@@ -1,5 +1,6 @@
 package me.nithanim.mensaapi.parser;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import me.nithanim.mensaapi.common.Meal;
@@ -13,6 +14,11 @@ public class ClassicMenuFactory {
         Elements es = a.select(">td");
         
         String date = es.get(0).text();
+        try {
+            date = Util.parseTimeClassic(date);
+        } catch(ParseException ex) {
+            System.err.println("Unable to parse " + date + " for Classic!"); //print to err for now
+        }
         
         List<Meal> courses = new ArrayList<Meal>(3);
         for(Element e : es.get(1).select(">p")) {
