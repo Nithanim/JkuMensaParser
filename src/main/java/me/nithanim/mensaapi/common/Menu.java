@@ -51,9 +51,12 @@ public class Menu {
     
     /**
      * This gets the price of the complete menu for classic but will
-     * be zero for Choice.
+     * be -1 for Choice, since there are individual meal prices only.
      * 
-     * @return 
+     * @return Price of the meal,
+     * -1 if it has none on purpose or
+     * -2 if not found
+     * @see Meal
      */
     public int getPrice() {
         return price;

@@ -13,6 +13,13 @@ public class Meal {
         return desc;
     }
 
+    /**
+     * This gets the price of an individual meal. Does not work for
+     * Classic since there is only one price for the complete menu.
+     * 
+     * @return Price of the meal
+     * @see Menu
+     */
     public int getPrice() {
         return price;
     }
