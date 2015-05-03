@@ -18,7 +18,7 @@ public class JkuFactory {
         List<Menu> menus = new LinkedList<Menu>();
         for(Element offer : offers) {  //Classic 1, Classic 2, Choice, M-Cafe, ...
             try {
-                menus.addAll(JkuPlanFactory.newMenus(offer));
+                menus.addAll(JkuOfferFactory.newMenus(offer));
             } catch(IllegalArgumentException ex) {
                 //Ignore all but Classic and Choice for now
                 //System.out.println(ex.getMessage());

@@ -5,7 +5,7 @@ import java.util.List;
 import me.nithanim.mensaapi.common.Menu;
 import org.jsoup.nodes.Element;
 
-public class JkuPlanFactory {
+public class JkuOfferFactory {
     public static List<Menu> newMenus(Element e) {
         String name = e.select(">h2").text();
         
