@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class ClassicMenuFactory {
-    public static Menu newMenu(Element a, int price) {
+    public static Menu newMenu(Element a, int price, int oehBonus) {
         Elements es = a.select(">td");
         
         String date = es.get(0).text();
@@ -32,7 +32,7 @@ public class ClassicMenuFactory {
         if(courses.get(1).getDesc().contains("Geschlossen")) {
             return null;
         } else {
-            return new Menu(Type.CLASSIC, null, courses, price, date, isVegetarian);
+            return new Menu(Type.CLASSIC, null, courses, price, oehBonus, date, isVegetarian);
         }
     }
     

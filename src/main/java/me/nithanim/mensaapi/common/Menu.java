@@ -7,14 +7,16 @@ public class Menu {
     private final String subtype;
     private final List<Meal> meals;
     private final int price;
+    private final int oehBonus;
     private final String date;
     private final boolean isVegetarian;
     
-    public Menu(Type type, String subtype, List<Meal> meals, int price, String date, boolean isVegetarian) {
+    public Menu(Type type, String subtype, List<Meal> meals, int price, int oehBonus, String date, boolean isVegetarian) {
         this.type = type;
         this.subtype = subtype;
         this.meals = meals;
         this.price = price;
+        this.oehBonus = oehBonus;
         this.date = date;
         this.isVegetarian = isVegetarian;
     }

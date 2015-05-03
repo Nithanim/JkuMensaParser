@@ -62,7 +62,7 @@ public class ChoiceMenuFactory {
             }
             
             if(!meals.isEmpty()) {
-                menus.add(new Menu(Type.CHOICE, subtype, meals, -1, date, false)); //TODO Veggie
+                menus.add(new Menu(Type.CHOICE, subtype, meals, -1, 0, date, false)); //TODO Veggie
             }
         }
         return menus;

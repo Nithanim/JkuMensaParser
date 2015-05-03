@@ -11,10 +11,11 @@ public class PlanFactory {
         
         if(name.startsWith("Menü Classic")) {
             int price = name.endsWith("1") ? 365 : 500;
+            int oehBonus = name.endsWith("1") ? 115 : 80;
             
             List<Menu> menus = new ArrayList<Menu>(5);
             for(Element menuItem : e.select(">.menu-item > table > tbody > tr")) {
-                Menu menu = ClassicMenuFactory.newMenu(menuItem, price);
+                Menu menu = ClassicMenuFactory.newMenu(menuItem, price, oehBonus);
                 if(menu != null) {
                     menus.add(menu);
                 }
