@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.parser;
+package me.nithanim.mensaapi.parser.jku;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -6,10 +6,11 @@ import java.util.List;
 import me.nithanim.mensaapi.common.Meal;
 import me.nithanim.mensaapi.common.Menu;
 import me.nithanim.mensaapi.common.Type;
+import me.nithanim.mensaapi.parser.Util;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class ClassicMenuFactory {
+public class JkuClassicMenuFactory {
     public static Menu newMenu(Element a, int price, int oehBonus) {
         Elements es = a.select(">td");
         

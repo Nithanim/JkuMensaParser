@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.parser;
+package me.nithanim.mensaapi.parser.jku;
 
 import java.text.ParseException;
 import java.util.Iterator;
@@ -10,13 +10,14 @@ import java.util.regex.Pattern;
 import me.nithanim.mensaapi.common.Meal;
 import me.nithanim.mensaapi.common.Menu;
 import me.nithanim.mensaapi.common.Type;
+import me.nithanim.mensaapi.parser.Util;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 
-public class ChoiceMenuFactory {
+public class JkuChoiceMenuFactory {
     private static final Pattern PATTERN = Pattern.compile("^([\\D]+)(\\d{1,2},\\d\\d) [A-Za-z]+$");
     
     public static List<Menu> newMenu(Element e) {

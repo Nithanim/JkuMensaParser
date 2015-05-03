@@ -1,11 +1,11 @@
-package me.nithanim.mensaapi.parser;
+package me.nithanim.mensaapi.parser.jku;
 
 import java.util.ArrayList;
 import java.util.List;
 import me.nithanim.mensaapi.common.Menu;
 import org.jsoup.nodes.Element;
 
-public class PlanFactory {
+public class JkuPlanFactory {
     public static List<Menu> newMenus(Element e) {
         String name = e.select(">h2").text();
         
@@ -15,7 +15,7 @@ public class PlanFactory {
             
             List<Menu> menus = new ArrayList<Menu>(5);
             for(Element menuItem : e.select(">.menu-item > table > tbody > tr")) {
-                Menu menu = ClassicMenuFactory.newMenu(menuItem, price, oehBonus);
+                Menu menu = JkuClassicMenuFactory.newMenu(menuItem, price, oehBonus);
                 if(menu != null) {
                     menus.add(menu);
                 }
@@ -24,7 +24,7 @@ public class PlanFactory {
         } else if(name.equals("Choice")) {
             List<Menu> menus = new ArrayList<Menu>(5);
             Element menuItem = e.select(">.menu-item > table > tbody > tr > td").first();
-            menus.addAll(ChoiceMenuFactory.newMenu(menuItem));
+            menus.addAll(JkuChoiceMenuFactory.newMenu(menuItem));
             return menus;
         }
         
