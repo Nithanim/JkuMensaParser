@@ -17,7 +17,7 @@ public class ClassicMenuFactory {
         try {
             date = Util.parseTimeClassic(date);
         } catch(ParseException ex) {
-            System.err.println("Unable to parse " + date + " for Classic!"); //print to err for now
+            System.err.println("Unable to parse date \"" + date + "\" for Classic!"); //print to err for now
         }
         
         List<Meal> courses = new ArrayList<Meal>(3);

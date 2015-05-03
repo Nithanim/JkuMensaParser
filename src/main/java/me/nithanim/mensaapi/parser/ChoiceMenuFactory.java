@@ -26,7 +26,7 @@ public class ChoiceMenuFactory {
         try {
             date = Util.parseTimeChoice(date);
         } catch(ParseException ex) {
-            System.err.println("Unable to parse " + date + " for Choice!"); //print to err for now
+            System.err.println("Unable to parse date \"" + date + "\" for Choice!"); //print to err for now
         }
         
         replaceAllImages(e);
