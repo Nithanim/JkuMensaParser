@@ -3,10 +3,10 @@ package me.nithanim.mensaapi.parser.jku;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import me.nithanim.mensaapi.MensaParseException;
 import me.nithanim.mensaapi.common.Meal;
 import me.nithanim.mensaapi.common.Menu;
 import me.nithanim.mensaapi.common.Type;
-import me.nithanim.mensaapi.parser.Util;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -18,7 +18,7 @@ public class JkuClassicMenuFactory {
         try {
             date = Util.parseTimeClassic(date);
         } catch(ParseException ex) {
-            System.err.println("Unable to parse date \"" + date + "\" for Classic!"); //print to err for now
+            throw new MensaParseException("Unable to parse date \"" + date + "\" for Classic!");
         }
         
         List<Meal> courses = new ArrayList<Meal>(3);

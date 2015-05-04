@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.nithanim.mensaapi.MensaParseException;
 import me.nithanim.mensaapi.common.Meal;
 import me.nithanim.mensaapi.common.Menu;
 import me.nithanim.mensaapi.common.Type;
-import me.nithanim.mensaapi.parser.Util;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -27,7 +27,7 @@ public class JkuChoiceMenuFactory {
         try {
             date = Util.parseTimeChoice(date);
         } catch(ParseException ex) {
-            System.err.println("Unable to parse date \"" + date + "\" for Choice!"); //print to err for now
+            throw new MensaParseException("Unable to parse date \"" + date + "\" for Choice!");
         }
         
         replaceAllImages(e);

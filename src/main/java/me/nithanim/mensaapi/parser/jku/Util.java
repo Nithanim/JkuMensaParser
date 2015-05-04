@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.parser;
+package me.nithanim.mensaapi.parser.jku;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
