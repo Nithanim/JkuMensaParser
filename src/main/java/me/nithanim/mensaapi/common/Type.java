@@ -1,5 +1,5 @@
 package me.nithanim.mensaapi.common;
 
 public enum Type {
-    CLASSIC, CHOICE;
+    CLASSIC, CHOICE, KHG, RAAB;
 }
