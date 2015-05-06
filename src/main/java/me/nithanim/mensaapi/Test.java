@@ -10,6 +10,7 @@ public class Test {
     public static void main(String[] args) throws IOException {
         List<Menu> menus = MainFactory.newMain(MensaType.JKU);
         menus.addAll(MainFactory.newMain(MensaType.KHG));
+        menus.addAll(MainFactory.newMain(MensaType.RAAB));
         for(Menu m : menus) {
             System.out.println(m.toString());
         }

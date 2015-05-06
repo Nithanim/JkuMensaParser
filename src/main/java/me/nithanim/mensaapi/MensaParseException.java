@@ -7,4 +7,8 @@ public class MensaParseException extends RuntimeException {
     public MensaParseException(String message) {
         super(message);
     }
+
+    public MensaParseException(Throwable cause) {
+        super(cause);
+    }
 }
