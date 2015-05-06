@@ -51,7 +51,7 @@ public class KhgFactory {
             price = -2;
         }
         
-        return new Menu(Type.KHG, date, meals, price, 115, date, false);
+        return new Menu(Type.KHG, null, meals, price, 115, date, false);
     }
     
     private static List<Meal> parseMeals(String text) {
