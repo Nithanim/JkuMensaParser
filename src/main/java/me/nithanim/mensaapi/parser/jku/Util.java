@@ -3,10 +3,11 @@ package me.nithanim.mensaapi.parser.jku;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public final class Util {
-    private static final SimpleDateFormat TIME_FORMAT_CLASSIC = new SimpleDateFormat("dd.MM.");
-    private static final SimpleDateFormat TIME_FORMAT_CHOICE = new SimpleDateFormat("dd. MMMM yyyy");
+    private static final SimpleDateFormat TIME_FORMAT_CLASSIC = new SimpleDateFormat("dd.MM.", Locale.GERMAN);
+    private static final SimpleDateFormat TIME_FORMAT_CHOICE = new SimpleDateFormat("dd. MMMM yyyy", Locale.GERMAN);
     private static final SimpleDateFormat TIME_FORMAT_ISO = new SimpleDateFormat("yyyy-MM-dd");
     
     public static String parseTimeClassic(String time) throws ParseException {
