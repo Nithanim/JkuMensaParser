@@ -15,7 +15,7 @@ public class JkuOfferFactory {
             
             List<Menu> menus = new ArrayList<Menu>(5);
             for(Element menuItem : e.select(">.menu-item > table > tbody > tr")) {
-                Menu menu = JkuClassicMenuFactory.newMenu(menuItem, price, oehBonus);
+                Menu menu = JkuClassicMenuFactory.newMenu(name, menuItem, price, oehBonus);
                 if(menu != null) {
                     menus.add(menu);
                 }

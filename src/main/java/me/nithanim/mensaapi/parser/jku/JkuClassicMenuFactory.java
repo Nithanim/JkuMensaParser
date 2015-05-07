@@ -11,7 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class JkuClassicMenuFactory {
-    public static Menu newMenu(Element a, int price, int oehBonus) {
+    public static Menu newMenu(String name, Element a, int price, int oehBonus) {
         Elements es = a.select(">td");
         
         String date = es.get(0).text();
@@ -23,8 +23,8 @@ public class JkuClassicMenuFactory {
         
         List<Meal> courses = new ArrayList<Meal>(3);
         for(Element e : es.get(1).select(">p")) {
-            String name = e.text().replaceAll(",$", "");
-            courses.add(new Meal(name, -1));
+            String meal = e.text().replaceAll(",$", "");
+            courses.add(new Meal(meal, -1));
         }
         
         boolean isVegetarian = isVegetarian(es.get(2));
@@ -33,7 +33,7 @@ public class JkuClassicMenuFactory {
         if(courses.get(1).getDesc().contains("Geschlossen")) {
             return null;
         } else {
-            return new Menu(Type.CLASSIC, null, courses, price, oehBonus, date, isVegetarian);
+            return new Menu(Type.CLASSIC, name, courses, price, oehBonus, date, isVegetarian);
         }
     }
     
