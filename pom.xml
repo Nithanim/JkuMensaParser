@@ -40,6 +40,12 @@
             </plugin>
         </plugins>
     </build>
+    <licenses>
+        <license>
+            <name>GNU General Lesser Public License (LGPL) version 3.0</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+        </license>
+    </licenses>
     <distributionManagement>
         <repository>
             <id>nithanim-mvn2</id>
