@@ -1,10 +1,8 @@
-package me.nithanim.mensaapi;
+package me.nithanim.mensaparser;
 
 import java.io.IOException;
 import java.util.List;
-import me.nithanim.mensaapi.parser.MainFactory;
-import me.nithanim.mensaapi.common.Menu;
-import me.nithanim.mensaapi.parser.MensaType;
+import me.nithanim.mensaapi.Menu;
 
 public class Test {
     public static void main(String[] args) throws IOException {

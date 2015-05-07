@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.util;
+package me.nithanim.mensaparser.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

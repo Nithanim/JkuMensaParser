@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.parser.jku;
+package me.nithanim.mensaparser.jku;
 
 import java.text.ParseException;
 import java.util.Iterator;
@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.nithanim.mensaapi.MensaParseException;
-import me.nithanim.mensaapi.common.Meal;
-import me.nithanim.mensaapi.common.Menu;
-import me.nithanim.mensaapi.common.Type;
+import me.nithanim.mensaparser.MensaParseException;
+import me.nithanim.mensaapi.Meal;
+import me.nithanim.mensaapi.Menu;
+import me.nithanim.mensaapi.Type;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;

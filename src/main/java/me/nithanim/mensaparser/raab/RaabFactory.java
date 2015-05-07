@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.parser.raab;
+package me.nithanim.mensaparser.raab;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import me.nithanim.mensaapi.MensaParseException;
-import me.nithanim.mensaapi.common.Meal;
-import me.nithanim.mensaapi.common.Menu;
-import me.nithanim.mensaapi.common.Type;
-import me.nithanim.mensaapi.util.TimeUtil;
+import me.nithanim.mensaparser.MensaParseException;
+import me.nithanim.mensaapi.Meal;
+import me.nithanim.mensaapi.Menu;
+import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.util.TimeUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

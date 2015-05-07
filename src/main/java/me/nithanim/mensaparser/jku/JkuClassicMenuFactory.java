@@ -1,12 +1,12 @@
-package me.nithanim.mensaapi.parser.jku;
+package me.nithanim.mensaparser.jku;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import me.nithanim.mensaapi.MensaParseException;
-import me.nithanim.mensaapi.common.Meal;
-import me.nithanim.mensaapi.common.Menu;
-import me.nithanim.mensaapi.common.Type;
+import me.nithanim.mensaparser.MensaParseException;
+import me.nithanim.mensaapi.Meal;
+import me.nithanim.mensaapi.Menu;
+import me.nithanim.mensaapi.Type;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 

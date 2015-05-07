@@ -1,11 +1,11 @@
-package me.nithanim.mensaapi.parser;
+package me.nithanim.mensaparser;
 
 import java.io.IOException;
 import java.util.List;
-import me.nithanim.mensaapi.common.Menu;
-import me.nithanim.mensaapi.parser.jku.JkuFactory;
-import me.nithanim.mensaapi.parser.khg.KhgFactory;
-import me.nithanim.mensaapi.parser.raab.RaabFactory;
+import me.nithanim.mensaapi.Menu;
+import me.nithanim.mensaparser.jku.JkuFactory;
+import me.nithanim.mensaparser.khg.KhgFactory;
+import me.nithanim.mensaparser.raab.RaabFactory;
 
 public class MainFactory {
     public static List<Menu> newMain(MensaType mensaType) throws IOException {

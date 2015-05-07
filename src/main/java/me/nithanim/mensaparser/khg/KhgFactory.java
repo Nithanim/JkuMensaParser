@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi.parser.khg;
+package me.nithanim.mensaparser.khg;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.nithanim.mensaapi.common.Meal;
-import me.nithanim.mensaapi.common.Menu;
-import me.nithanim.mensaapi.common.Type;
-import me.nithanim.mensaapi.util.TimeUtil;
+import me.nithanim.mensaapi.Meal;
+import me.nithanim.mensaapi.Menu;
+import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.util.TimeUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

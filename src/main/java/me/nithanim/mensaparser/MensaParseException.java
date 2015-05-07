@@ -1,4 +1,4 @@
-package me.nithanim.mensaapi;
+package me.nithanim.mensaparser;
 
 public class MensaParseException extends RuntimeException {
     public MensaParseException() {
