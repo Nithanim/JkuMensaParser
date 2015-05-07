@@ -1,9 +1,10 @@
 package me.nithanim.mensaparser.jku;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import me.nithanim.mensaapi.Menu;
+import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.MensaParseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,20 +12,22 @@ import org.jsoup.select.Elements;
 
 public class JkuFactory {
 
-    public static List<Menu> newJku() throws IOException {
+    public static List<Menu> newJku(Type type) throws IOException {
+        if(!(type == Type.CLASSIC || type == Type.CHOICE)) {
+            throw new IllegalArgumentException("Not responsible for " + type);
+        }
+        
+        String beginMatch = type == Type.CLASSIC ? "Menü Classic" : "Choice";
+        
         Document doc = Jsoup.connect("http://menu.mensen.at/index/print/locid/1").get();
         Elements offers = doc.select("html body div#wrapper div#menu");
-
-        List<Menu> menus = new LinkedList<Menu>();
-        for(Element offer : offers) {  //Classic 1, Classic 2, Choice, M-Cafe, ...
-            try {
-                menus.addAll(JkuOfferFactory.newMenus(offer));
-            } catch(IllegalArgumentException ex) {
-                //Ignore all but Classic and Choice for now
-                //System.out.println(ex.getMessage());
+        
+        for(Element offer : offers) {
+            if(offer.select(">h2").first().text().startsWith(beginMatch)) {
+                return JkuOfferFactory.newMenus(offer);
             }
         }
-        return menus;
+        throw new MensaParseException("Unable to locate anchor for " + type);
     }
     
 }
