@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
 
 public class KhgFactory {
     private static final Pattern DATE_PATTERN = Pattern.compile("^[^\\d]+(\\d{1,2})\\.(\\d{1,2})\\.[\\-– ]+\\d{1,2}\\.\\d{1,2}\\.(\\d{4}) *$");
+    private static final String [] MENU_NAMES = {"MENÜ 1", "MENÜ 2"};
     
     public static List<Menu> newKhg() throws IOException {
         Document doc = Jsoup.connect("http://www.khg-linz.at/?page_id=379").get();
@@ -27,6 +28,7 @@ public class KhgFactory {
         
         Calendar base = parseDate(content.select(">div").first());
         Calendar currDate = (Calendar) base.clone();
+        int counter = 0;
         for(Element e : content.select(">table > tbody > tr")) {
             Elements childs = e.select(">td");
             
@@ -34,13 +36,14 @@ public class KhgFactory {
                 currDate.set(Calendar.DAY_OF_MONTH, getDayOfWeekOffset(childs.remove(0).text()));
             }
             
-            menus.add(parseMenu(childs, TimeUtil.calendarToIso(currDate)));
+            menus.add(parseMenu(MENU_NAMES[counter], childs, TimeUtil.calendarToIso(currDate)));
+            counter = (counter + 1) % 2;
         }
         
         return menus;
     }
     
-    private static Menu parseMenu(Elements es, String date) {
+    private static Menu parseMenu(String name, Elements es, String date) {
         List<Meal> meals = parseMeals(es.get(0).text());
         
         int price;
@@ -51,7 +54,7 @@ public class KhgFactory {
             price = -2;
         }
         
-        return new Menu(Type.KHG, null, meals, price, 115, date, false);
+        return new Menu(Type.KHG, name, meals, price, 115, date, false);
     }
     
     private static List<Meal> parseMeals(String text) {
