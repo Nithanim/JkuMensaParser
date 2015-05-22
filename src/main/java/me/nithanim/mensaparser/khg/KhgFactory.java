@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.SourceFactory;
 import me.nithanim.mensaparser.util.TimeUtil;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,8 +20,14 @@ public class KhgFactory {
     private static final Pattern DATE_PATTERN = Pattern.compile("^[^\\d]+(\\d{1,2})\\.(\\d{1,2})\\.[\\-– ]+\\d{1,2}\\.\\d{1,2}\\.(\\d{4}) *$");
     private static final String [] MENU_NAMES = {"MENÜ 1", "MENÜ 2"};
     
-    public static List<Menu> newKhg() throws IOException {
-        Document doc = Jsoup.connect("http://www.khg-linz.at/?page_id=379").get();
+    private final SourceFactory sourceFactory;
+
+    public KhgFactory(SourceFactory sourceFactory) {
+        this.sourceFactory = sourceFactory;
+    }
+    
+    public List<Menu> newKhg() throws IOException {
+        Document doc = sourceFactory.getAsHtml();
         Elements content = doc.select("html body div#total-container div#container div#middle-wrapper div#content div.post_content");
         
         List<Menu> menus = new ArrayList<Menu>();

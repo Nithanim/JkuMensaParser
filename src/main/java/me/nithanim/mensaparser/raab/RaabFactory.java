@@ -5,17 +5,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 import me.nithanim.mensaparser.MensaParseException;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.SourceFactory;
 import me.nithanim.mensaparser.util.TimeUtil;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
@@ -23,9 +21,14 @@ import org.jsoup.select.Elements;
 
 public class RaabFactory {
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("d. MMMM yyyy", Locale.GERMAN);
+    private final SourceFactory sourceFactory;
+
+    public RaabFactory(SourceFactory sourceFactory) {
+        this.sourceFactory = sourceFactory;
+    }
     
-    public static List<Menu> newRaab() throws IOException {
-        Document doc = Jsoup.connect("http://www.sommerhaus-hotel.at/de/restaurant_plan.php").get();
+    public List<Menu> newRaab() throws IOException {
+        Document doc = sourceFactory.getAsHtml();
         Elements trs = doc.select("html body div#content table tbody tr td table#speiseplan tbody tr");
         
         ArrayList<Menu> menus = new ArrayList<Menu>();
@@ -53,6 +56,12 @@ public class RaabFactory {
     
     private static Menu parseSingleMenu(ListIterator<TextNode> it, String date) {
         String title = tidyTitle(it.next().text().trim());
+        
+        if(!it.hasNext()) { // -> full day only has one element -> closed
+            List<Meal> meals = new ArrayList<Meal>(1);
+            meals.add(new Meal(title, -2));
+            return new Menu(Type.RAAB, "", meals, -1, 0, date, false);
+        }
         
         ArrayList<Meal> meals = new ArrayList<Meal>(4);
         while(true) {

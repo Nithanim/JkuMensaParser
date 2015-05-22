@@ -5,21 +5,26 @@ import java.util.List;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
 import me.nithanim.mensaparser.MensaParseException;
-import org.jsoup.Jsoup;
+import me.nithanim.mensaparser.SourceFactory;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class JkuFactory {
+    private final SourceFactory sourceFactory;
+    
+    public JkuFactory(SourceFactory sourceFactory) {
+        this.sourceFactory = sourceFactory;
+    }
 
-    public static List<Menu> newJku(Type type) throws IOException {
+    public List<Menu> newJku(Type type) throws IOException {
         if(!(type == Type.CLASSIC || type == Type.CHOICE)) {
             throw new IllegalArgumentException("Not responsible for " + type);
         }
         
         String beginMatch = type == Type.CLASSIC ? "Menü Classic" : "Choice";
         
-        Document doc = Jsoup.connect("http://menu.mensen.at/index/print/locid/1").get();
+        Document doc = sourceFactory.getAsHtml();
         Elements offers = doc.select("html body div#wrapper div#menu");
         
         for(Element offer : offers) {
