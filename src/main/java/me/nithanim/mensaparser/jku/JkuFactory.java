@@ -18,17 +18,15 @@ public class JkuFactory {
     }
 
     public List<Menu> newJku(Type type) throws IOException {
-        if(!(type == Type.CLASSIC || type == Type.CHOICE)) {
+        if(!(type == Type.CLASSIC)) {
             throw new IllegalArgumentException("Not responsible for " + type);
         }
-        
-        String beginMatch = type == Type.CLASSIC ? "Menü Classic" : "Choice";
         
         Document doc = sourceFactory.getAsHtml();
         Elements offers = doc.select("html body div#wrapper div#menu");
         
         for(Element offer : offers) {
-            if(offer.select(">h2").first().text().startsWith(beginMatch)) {
+            if(offer.select(">h2").first().text().startsWith("Menü Classic")) {
                 return JkuOfferFactory.newMenus(offer);
             }
         }

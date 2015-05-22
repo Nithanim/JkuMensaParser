@@ -21,13 +21,7 @@ public class JkuOfferFactory {
                 }
             }
             return menus;
-        } else if(name.equals("Choice")) {
-            List<Menu> menus = new ArrayList<Menu>(5);
-            Element menuItem = e.select(">.menu-item > table > tbody > tr > td").first();
-            menus.addAll(JkuChoiceMenuFactory.newMenu(menuItem));
-            return menus;
         }
-        
         throw new IllegalArgumentException("Unknown Menu");
     }
 }

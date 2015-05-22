@@ -1,5 +1,6 @@
 package me.nithanim.mensaparser.jku;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,16 +12,37 @@ import me.nithanim.mensaparser.MensaParseException;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.SourceFactory;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 
-public class JkuChoiceMenuFactory {
+public class JkuChoiceFactory {
     private static final Pattern PATTERN = Pattern.compile("^([\\D]+)(\\d{1,2},\\d\\d) [A-Za-z]+$");
     
-    public static List<Menu> newMenu(Element e) {
+    private final SourceFactory sourceFactory;
+
+    public JkuChoiceFactory(SourceFactory sourceFactory) {
+        this.sourceFactory = sourceFactory;
+    }
+    
+    public List<Menu> newMenu() throws IOException {
+        Document doc = sourceFactory.getAsHtml();
+        Elements offers = doc.select("html body div#wrapper div#menu");
+        
+        for(Element offer : offers) {
+            if(offer.select(">h2").first().text().startsWith("Choice")) {
+                Element e = offer.select(">.menu-item > table > tbody > tr > td").first();
+                return parseChoice(e);
+            }
+        }
+        throw new MensaParseException("Unable to find choice menus!");
+    }
+    
+    private static List<Menu> parseChoice(Element e) {
         Elements subtags = e.select("p");
         
         String date = handleWhitespacesAndTrim(subtags.remove(0).text());
