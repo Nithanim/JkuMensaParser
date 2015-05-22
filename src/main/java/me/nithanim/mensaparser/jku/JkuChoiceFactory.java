@@ -29,7 +29,7 @@ public class JkuChoiceFactory {
         this.sourceFactory = sourceFactory;
     }
     
-    public List<Menu> newMenu() throws IOException {
+    public List<Menu> newJkuChoice() throws IOException {
         Document doc = sourceFactory.getAsHtml();
         Elements offers = doc.select("html body div#wrapper div#menu");
         
