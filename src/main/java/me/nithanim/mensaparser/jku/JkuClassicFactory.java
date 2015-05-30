@@ -44,11 +44,7 @@ public class JkuClassicFactory {
         for(Element rawMenu : domMenus.getElementsByTag("menu")) {
             String rawDate = rawMenu.getElementsByTag("day").first().text();
             String date;
-            try {
-                date = Util.parseTimeClassic(rawDate);
-            } catch(ParseException ex) {
-                throw new MensaParseException(ex);
-            }
+            date = JkuUtil.parseTimeClassic(rawDate);
             
             List<Meal> meals = new ArrayList<Meal>(3);
             for(Element rawMeal : rawMenu.getElementsByTag("p")) {

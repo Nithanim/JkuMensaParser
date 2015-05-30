@@ -4,32 +4,29 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import me.nithanim.mensaparser.MensaParseException;
 
-public final class Util {
+public final class JkuUtil {
     private static final SimpleDateFormat TIME_FORMAT_CLASSIC = new SimpleDateFormat("dd.MM.", Locale.GERMAN);
     private static final SimpleDateFormat TIME_FORMAT_CHOICE = new SimpleDateFormat("dd. MMMM yyyy", Locale.GERMAN);
     private static final SimpleDateFormat TIME_FORMAT_ISO = new SimpleDateFormat("yyyy-MM-dd");
     
-    public static String parseTimeClassic(String time) throws ParseException {
+    public static String parseTimeClassic(String time) throws MensaParseException {
         try {
             Date t = TIME_FORMAT_CLASSIC.parse(time.split(" ", 2)[1]);
             t.setYear(getCurrentYear());
             return convertToIsoDate(t);
-        } catch(ParseException ex) {
-            throw ex;
         } catch(Exception ex) {
-            throw new ParseException("Complete miss in parsing", -1);
+            throw new MensaParseException("Unable to parse \"" + time + "\"");
         }
     }
     
-    public static String parseTimeChoice(String time) throws ParseException {
+    public static String parseTimeChoice(String time) throws MensaParseException {
         try {
             Date t = TIME_FORMAT_CHOICE.parse(time.split(", ", 2)[1]);
             return convertToIsoDate(t);
-        } catch(ParseException ex) {
-            throw ex;
         } catch(Exception ex) {
-            throw new ParseException("Complete miss in parsing", -1);
+            throw new MensaParseException("Unable to parse \"" + time + "\"");
         }
     }
     

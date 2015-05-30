@@ -46,11 +46,7 @@ public class JkuChoiceFactory {
         Elements subtags = e.select("p");
         
         String date = handleWhitespacesAndTrim(subtags.remove(0).text());
-        try {
-            date = Util.parseTimeChoice(date);
-        } catch(ParseException ex) {
-            throw new MensaParseException("Unable to parse date \"" + date + "\" for Choice!");
-        }
+        date = JkuUtil.parseTimeChoice(date);
         
         replaceAllImages(e);
         List<Node> nodes = getEssentialNodes(subtags);
