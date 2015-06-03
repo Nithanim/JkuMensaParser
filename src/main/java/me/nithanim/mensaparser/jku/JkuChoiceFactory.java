@@ -12,6 +12,7 @@ import me.nithanim.mensaparser.MensaParseException;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.MensaFactory;
 import me.nithanim.mensaparser.SourceFactory;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +21,7 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 
-public class JkuChoiceFactory {
+public class JkuChoiceFactory implements MensaFactory {
     private static final Pattern PATTERN = Pattern.compile("^([\\D]+)(\\d{1,2},\\d\\d) [A-Za-z]+$");
     
     private final SourceFactory sourceFactory;
@@ -28,8 +29,9 @@ public class JkuChoiceFactory {
     public JkuChoiceFactory(SourceFactory sourceFactory) {
         this.sourceFactory = sourceFactory;
     }
-    
-    public List<Menu> newJkuChoice() throws IOException {
+
+    @Override
+    public List<Menu> newMensa() throws IOException {
         Document doc = sourceFactory.getAsHtml();
         Elements offers = doc.select("html body div#wrapper div#menu");
         

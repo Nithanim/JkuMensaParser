@@ -19,7 +19,7 @@ public class JkuChoiceFactoryTest extends ParserTest {
     @Test
     public void testParseOrdinaryChoice() throws Exception {
         getSourceFactory().setFile("ordinary.htm");
-        List<Menu> actual = getFactory().newJkuChoice();
+        List<Menu> actual = newMensa();
         
         List<Menu> expected = new ArrayList<Menu>();
         expected.add(new Menu(Type.CHOICE, "Grill",
@@ -62,7 +62,7 @@ public class JkuChoiceFactoryTest extends ParserTest {
     @Test
     public void testWithoutSnack() throws Exception {
         getSourceFactory().setFile("without-snack.htm");
-        List<Menu> menus = getFactory().newJkuChoice();
+        List<Menu> menus = newMensa();
         
         for(Menu menu : menus) {
             if(menu.getSubtype().equals("Snack")) {
@@ -75,7 +75,7 @@ public class JkuChoiceFactoryTest extends ParserTest {
     public void testSuesshausTwoPrices() throws Exception {
         //list as not readable and one meal for now
         getSourceFactory().setFile("suesshaus-doubleprice.htm");
-        List<Menu> menus = getFactory().newJkuChoice();
+        List<Menu> menus = newMensa();
         
         int counter = 0;
         Menu suesshaus = null;

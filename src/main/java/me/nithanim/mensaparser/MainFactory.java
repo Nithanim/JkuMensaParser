@@ -15,15 +15,19 @@ import me.nithanim.mensaparser.raab.RaabSourceFactory;
 
 public class MainFactory {
     public static List<Menu> newMain(Type type) throws IOException {
+        return getFactoryForType(type).newMensa();
+    }
+    
+    private static MensaFactory getFactoryForType(Type type) {
         switch(type) {
             case CLASSIC:
-                return new JkuClassicFactory(new JkuClassicSourceFactory()).newJkuClassic();
+                return new JkuClassicFactory(new JkuClassicSourceFactory());
             case CHOICE:
-                return new JkuChoiceFactory(new JkuChoiceSourceFactory()).newJkuChoice();
+                return new JkuChoiceFactory(new JkuChoiceSourceFactory());
             case KHG:
-                return new KhgFactory(new KhgSourceFactory()).newKhg();
+                return new KhgFactory(new KhgSourceFactory());
             case RAAB:
-                return new RaabFactory(new RaabSourceFactory()).newRaab();
+                return new RaabFactory(new RaabSourceFactory());
             default:
                 throw new IllegalArgumentException("Unknown MensaType!");
         }

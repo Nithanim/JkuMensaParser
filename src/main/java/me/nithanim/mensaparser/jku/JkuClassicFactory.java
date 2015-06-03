@@ -1,27 +1,27 @@
 package me.nithanim.mensaparser.jku;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
-import me.nithanim.mensaparser.MensaParseException;
+import me.nithanim.mensaparser.MensaFactory;
 import me.nithanim.mensaparser.SourceFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class JkuClassicFactory {
+public class JkuClassicFactory implements MensaFactory {
     private final SourceFactory sourceFactory;
 
     public JkuClassicFactory(SourceFactory sourceFactory) {
         this.sourceFactory = sourceFactory;
     }
-    
-    public List<Menu> newJkuClassic() throws IOException {
+
+    @Override
+    public List<Menu> newMensa() throws IOException {
         Document doc = sourceFactory.getAsHtml();
         
         List<Menu> menus = new ArrayList<Menu>(2*5);

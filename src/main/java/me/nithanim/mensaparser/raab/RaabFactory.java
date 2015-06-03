@@ -12,6 +12,7 @@ import me.nithanim.mensaparser.MensaParseException;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.MensaFactory;
 import me.nithanim.mensaparser.SourceFactory;
 import me.nithanim.mensaparser.util.TimeUtil;
 import org.jsoup.nodes.Document;
@@ -19,15 +20,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
-public class RaabFactory {
+public class RaabFactory implements MensaFactory {
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("d. MMMM yyyy", Locale.GERMAN);
     private final SourceFactory sourceFactory;
 
     public RaabFactory(SourceFactory sourceFactory) {
         this.sourceFactory = sourceFactory;
     }
-    
-    public List<Menu> newRaab() throws IOException {
+
+    @Override
+    public List<Menu> newMensa() throws IOException {
         Document doc = sourceFactory.getAsHtml();
         Elements trs = doc.select("html body div#content table tbody tr td table#speiseplan tbody tr");
         

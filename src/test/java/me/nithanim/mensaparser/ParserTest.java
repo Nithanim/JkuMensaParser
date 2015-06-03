@@ -1,5 +1,8 @@
 package me.nithanim.mensaparser;
 
+import java.io.IOException;
+import java.util.List;
+import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaparser.jku.JkuChoiceFactory;
 import org.junit.Before;
 
@@ -21,7 +24,7 @@ public class ParserTest {
         return sourceFactory;
     }
 
-    public JkuChoiceFactory getFactory() {
-        return factory;
+    public List<Menu> newMensa() throws IOException {
+        return factory.newMensa();
     }
 }
