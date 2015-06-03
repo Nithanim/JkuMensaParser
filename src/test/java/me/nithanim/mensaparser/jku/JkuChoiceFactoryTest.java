@@ -18,7 +18,7 @@ public class JkuChoiceFactoryTest extends ParserTest {
     
     @Test
     public void testParseOrdinaryChoice() throws Exception {
-        getSourceFactory().setFile("without-snack.htm");
+        getSourceFactory().setFile("ordinary.htm");
         List<Menu> actual = getFactory().newJkuChoice();
         
         List<Menu> expected = new ArrayList<Menu>();
