@@ -6,14 +6,17 @@ import java.util.List;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
+import me.nithanim.mensaparser.HTMLResourceSourceFactory;
 import me.nithanim.mensaparser.ParserTest;
+import me.nithanim.mensaparser.ParserTestUtil;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class JkuChoiceFactoryTest extends ParserTest {
     public JkuChoiceFactoryTest() {
-        super("jku/choice");
+        sourceFactory = new HTMLResourceSourceFactory("jku/choice");
+        mensaFactory = new JkuChoiceFactory(sourceFactory);
     }
     
     @Test
@@ -52,11 +55,7 @@ public class JkuChoiceFactoryTest extends ParserTest {
                     new Meal("Topfen-Marillenstrudel mit Vanillesauce und Fruchtcocktail 2,40/4,80 Euro", -2),
                 }), -1, 0, "2015-05-29", false));
         
-        assertEquals(expected.get(0), actual.get(0));
-        assertEquals(7, actual.size());
-        for(Menu m : expected) {
-            assertThat(actual, CoreMatchers.hasItem(m));
-        }
+        ParserTestUtil.assertMenuListEquals(expected, actual);
     }
     
     @Test
@@ -66,14 +65,14 @@ public class JkuChoiceFactoryTest extends ParserTest {
         
         for(Menu menu : menus) {
             if(menu.getSubtype().equals("Snack")) {
-                fail("Empty section Snack was founf but shuld have been discarded.");
+                fail("Empty section Snack was found but should have been discarded.");
             }
         }
     }
     
     @Test
     public void testSuesshausTwoPrices() throws Exception {
-        //list as not readable and one meal for now
+        //list as price not readable and one meal for now
         getSourceFactory().setFile("suesshaus-doubleprice.htm");
         List<Menu> menus = newMensa();
         

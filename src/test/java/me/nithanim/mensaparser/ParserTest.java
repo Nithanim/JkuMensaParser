@@ -3,21 +3,15 @@ package me.nithanim.mensaparser;
 import java.io.IOException;
 import java.util.List;
 import me.nithanim.mensaapi.Menu;
-import me.nithanim.mensaparser.jku.JkuChoiceFactory;
 import org.junit.Before;
 
 public class ParserTest {
-    private final ResourceSourceFactory sourceFactory;
-    private final JkuChoiceFactory factory;
+    protected ResourceSourceFactory sourceFactory;
+    protected MensaFactory mensaFactory;
 
     @Before
     public void setUp() {
         sourceFactory.setFile(null);
-    }
-
-    public ParserTest(String folder) {
-        sourceFactory = new ResourceSourceFactory(folder);
-        factory = new JkuChoiceFactory(sourceFactory);
     }
 
     public ResourceSourceFactory getSourceFactory() {
@@ -25,6 +19,6 @@ public class ParserTest {
     }
 
     public List<Menu> newMensa() throws IOException {
-        return factory.newMensa();
+        return mensaFactory.newMensa();
     }
 }

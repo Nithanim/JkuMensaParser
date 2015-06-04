@@ -3,10 +3,9 @@ package me.nithanim.mensaparser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public class ResourceSourceFactory implements SourceFactory {
+public abstract class ResourceSourceFactory implements SourceFactory {
     private final String folder;
     private String file;
 
@@ -21,9 +20,11 @@ public class ResourceSourceFactory implements SourceFactory {
     @Override
     public Document getAsHtml() throws IOException {
         URL url = getClass().getResource(getPath());
-        File file = new File(url.getPath());
-        return Jsoup.parse(file, null);
+        File f = new File(url.getPath());
+        return parseFile(f);
     }
+    
+    protected abstract Document parseFile(File file) throws IOException;
 
     @Override
     public String getAsJson() throws IOException {
@@ -33,5 +34,4 @@ public class ResourceSourceFactory implements SourceFactory {
     private String getPath() {
         return "/" + folder + "/" + file;
     }
-    
 }
