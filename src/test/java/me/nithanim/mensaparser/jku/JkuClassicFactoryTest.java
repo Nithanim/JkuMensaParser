@@ -34,7 +34,7 @@ public class JkuClassicFactoryTest extends ParserTest {
         expected.add(new Menu(Type.CLASSIC, "Menü Classic 1",
                 Arrays.asList(new Meal[] {
                     new Meal("Klare Gemüsesuppe mit Backerbsen (vegan)", -1),
-                    new Meal("Wildreispfanne Asia mit Shrimps und Lachs,", -1),
+                    new Meal("Wildreispfanne Asia mit Shrimps und Lachs", -1),
                     new Meal("dazu Salat", -1),
                 }), 365, 115, "2015-06-02", false));
         expected.add(new Menu(Type.CLASSIC, "Menü Classic 1",
@@ -55,7 +55,7 @@ public class JkuClassicFactoryTest extends ParserTest {
         expected.add(new Menu(Type.CLASSIC, "Menü Classic 2",
                 Arrays.asList(new Meal[] {
                     new Meal("Erdäpfelcremesuppe", -1),
-                    new Meal("Saftiges Hirschragout mit Semmelknödel,", -1),
+                    new Meal("Saftiges Hirschragout mit Semmelknödel", -1),
                     new Meal("dazu Apfel-Rotkraut", -1),
                 }), 500, 80, "2015-06-01", false));
         expected.add(new Menu(Type.CLASSIC, "Menü Classic 2",
@@ -77,7 +77,7 @@ public class JkuClassicFactoryTest extends ParserTest {
         expected.add(new Menu(Type.CLASSIC, "Menü Classic 2",
                 Arrays.asList(new Meal[] {
                     new Meal("Klare Gemüsesuppe mit Frittaten", -1),
-                    new Meal("Gebackenes Putenschnitzel mit Reis und Preiselbeeren,", -1),
+                    new Meal("Gebackenes Putenschnitzel mit Reis und Preiselbeeren", -1),
                     new Meal("dazu Salat", -1),
                 }), 500, 80, "2015-06-05", false));
         

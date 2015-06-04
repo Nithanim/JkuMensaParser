@@ -48,7 +48,8 @@ public class JkuClassicFactory implements MensaFactory {
             
             List<Meal> meals = new ArrayList<Meal>(3);
             for(Element rawMeal : rawMenu.getElementsByTag("p")) {
-                meals.add(new Meal(rawMeal.text(), -1));
+                String desc = rawMeal.text().replaceAll("[\\s\\,]+$", "");
+                meals.add(new Meal(desc, -1));
             }
             menus.add(new Menu(Type.CLASSIC, title, meals, price, oehBonus, date, false));
         }
