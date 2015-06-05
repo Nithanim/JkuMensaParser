@@ -1,7 +1,6 @@
 package me.nithanim.mensaparser.jku;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,6 +111,14 @@ public class JkuChoiceFactory implements MensaFactory {
         }
     }
     
+    /**
+     * Puts all Nodes that belong together, i.e. one &lt;strong&gt;
+     * and the following elements (primarily TextNodes and &lt;img&gt;),
+     * in one list.
+     * 
+     * @param nodes All nodes to be splitted
+     * @return Nodes that belong together (&lt;strong&gt followed by text)
+     */
     private static List<List<String>> findNodesTogether(List<Node> nodes) {
         List<List<String>> result = new LinkedList<List<String>>();
         
@@ -152,7 +159,7 @@ public class JkuChoiceFactory implements MensaFactory {
     }
     
     /**
-     * Searches for &lt;strong&gt;s (which are assumes to be titles) and
+     * Searches for &lt;strong&gt;s (which are assumed to be titles) and
      * merges all directly following into a single &lt;strong&gt;s. <br/>
      * This is a workaround for "&lt;strong&gt;P&lt;/strong&gt;&lt;strong&gt;izza/Pasta&lt;/strong&gt;"
      * 

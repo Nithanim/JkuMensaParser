@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public abstract class SourceFactoryBase implements SourceFactory {
-
     @Override
     public Document getAsHtml() throws IOException {
         Connection con = Jsoup.connect(getUrl());
