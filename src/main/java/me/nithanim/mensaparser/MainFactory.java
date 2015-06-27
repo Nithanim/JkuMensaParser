@@ -17,9 +17,9 @@ public class MainFactory {
     public static List<Menu> newMain(Type type) throws IOException {
         return getFactoryForType(type).newMensa();
     }
-    
+
     private static MensaFactory getFactoryForType(Type type) {
-        switch(type) {
+        switch (type) {
             case CLASSIC:
                 return new JkuClassicFactory(new JkuClassicSourceFactory());
             case CHOICE:

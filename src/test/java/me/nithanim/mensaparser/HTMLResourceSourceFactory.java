@@ -9,7 +9,7 @@ public class HTMLResourceSourceFactory extends ResourceSourceFactory {
     public HTMLResourceSourceFactory(String folder) {
         super(folder);
     }
-    
+
     @Override
     protected Document parseFile(File file) throws IOException {
         return Jsoup.parse(file, null);

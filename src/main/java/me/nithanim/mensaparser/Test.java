@@ -14,15 +14,15 @@ public class Test {
         menus.addAll(call(Type.CHOICE));
         menus.addAll(call(Type.KHG));
         menus.addAll(call(Type.RAAB));
-        for(Menu m : menus) {
+        for (Menu m : menus) {
             System.out.println(m.toString());
         }
     }
-    
+
     private static List<Menu> call(Type t) {
         try {
             return MainFactory.newMain(t);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return Collections.EMPTY_LIST;

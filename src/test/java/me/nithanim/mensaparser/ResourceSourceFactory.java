@@ -16,21 +16,21 @@ public abstract class ResourceSourceFactory implements SourceFactory {
     public void setFile(String file) {
         this.file = file;
     }
-    
+
     @Override
     public Document getAsHtml() throws IOException {
         URL url = getClass().getResource(getPath());
         File f = new File(url.getPath());
         return parseFile(f);
     }
-    
+
     protected abstract Document parseFile(File file) throws IOException;
 
     @Override
     public String getAsJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     private String getPath() {
         return "/" + folder + "/" + file;
     }

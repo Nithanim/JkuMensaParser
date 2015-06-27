@@ -27,5 +27,4 @@ public class MainTestSuite {
     @After
     public void tearDown() throws Exception {
     }
-    
 }

@@ -23,12 +23,12 @@ public class JkuClassicFactory implements MensaFactory {
     @Override
     public List<Menu> newMensa() throws IOException {
         Document doc = sourceFactory.getAsHtml();
-        
-        List<Menu> menus = new ArrayList<Menu>(2*5);
+
+        List<Menu> menus = new ArrayList<Menu>(2 * 5);
         Elements offers = doc.select("item");
-        for(Element offer : offers) {
+        for (Element offer : offers) {
             String title = offer.select("> title").text();
-            if(title.startsWith("Menü Classic")) {
+            if (title.startsWith("Menü Classic")) {
                 int price = title.endsWith("1") ? 365 : 500;
                 int oehBonus = title.endsWith("1") ? 115 : 80;
                 String menuesAsXmlString = offer.select("> description").first().text();
@@ -40,14 +40,14 @@ public class JkuClassicFactory implements MensaFactory {
 
     private ArrayList<Menu> parseMenus(Document domMenus, String title, int price, int oehBonus) {
         ArrayList<Menu> menus = new ArrayList<Menu>(5);
-        
-        for(Element rawMenu : domMenus.getElementsByTag("menu")) {
+
+        for (Element rawMenu : domMenus.getElementsByTag("menu")) {
             String rawDate = rawMenu.getElementsByTag("day").first().text();
             String date;
             date = JkuUtil.parseTimeClassic(rawDate);
-            
+
             List<Meal> meals = new ArrayList<Meal>(3);
-            for(Element rawMeal : rawMenu.getElementsByTag("p")) {
+            for (Element rawMeal : rawMenu.getElementsByTag("p")) {
                 String desc = rawMeal.text().replaceAll("[\\s\\,]+$", "");
                 meals.add(new Meal(desc, -1));
             }

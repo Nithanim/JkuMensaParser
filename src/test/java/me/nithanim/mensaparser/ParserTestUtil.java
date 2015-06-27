@@ -11,12 +11,12 @@ public class ParserTestUtil {
         List<Menu> missingExpected = new ArrayList<Menu>(expected);
         missingExpected.removeAll(actual);
         Assert.assertEquals(Collections.EMPTY_LIST, missingExpected);
-        
+
         List<Menu> tooMuchActual = new ArrayList<Menu>(actual);
         tooMuchActual.removeAll(expected);
         Assert.assertEquals(Collections.EMPTY_LIST, tooMuchActual);
     }
-    
+
     private ParserTestUtil() {
     }
 }

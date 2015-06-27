@@ -14,12 +14,12 @@ public abstract class SourceFactoryBase implements SourceFactory {
         setConnectionProperties(con);
         return con.get();
     }
-    
+
     protected void setConnectionProperties(Connection con) {
     }
-    
+
     protected abstract String getUrl();
-    
+
     @Override
     public String getAsJson() {
         throw new UnsupportedOperationException("Not supported.");

@@ -32,51 +32,51 @@ public class RaabFactory implements MensaFactory {
     public List<Menu> newMensa() throws IOException {
         Document doc = sourceFactory.getAsHtml();
         Elements trs = doc.select("html body div#content table tbody tr td table#speiseplan tbody tr");
-        
+
         ArrayList<Menu> menus = new ArrayList<Menu>();
         ListIterator<Element> it = trs.listIterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             String date = parseDate(it.next().text());
-            
-            if(it.hasNext()) {
+
+            if (it.hasNext()) {
                 Element tr = it.next();
                 menus.addAll(parseMenus(tr.select("span").first(), date));
             }
         }
         return menus;
     }
-    
+
     private static List<Menu> parseMenus(Element e, String date) {
         ArrayList<Menu> menus = new ArrayList<Menu>();
-        
+
         ListIterator<TextNode> it = e.textNodes().listIterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             menus.add(parseSingleMenu(it, date));
         }
         return menus;
     }
-    
+
     private static Menu parseSingleMenu(ListIterator<TextNode> it, String date) {
         String title = tidyTitle(it.next().text().trim());
-        
-        if(!it.hasNext()) { // -> full day only has one element -> closed
+
+        if (!it.hasNext()) { // -> full day only has one element -> closed
             List<Meal> meals = new ArrayList<Meal>(1);
             meals.add(new Meal(title, -2));
             return new Menu(Type.RAAB, "", meals, -1, 0, date, false);
         }
-        
+
         ArrayList<Meal> meals = new ArrayList<Meal>(4);
-        while(true) {
+        while (true) {
             TextNode next = it.next();
-            
+
             String content = next.text().trim();
-            if(content.length() > 0) {
+            if (content.length() > 0) {
                 meals.add(new Meal(content, -1));
             }
-            
-            if(!it.hasNext()) {
+
+            if (!it.hasNext()) {
                 break;
-            } else if(it.next().text().trim().startsWith("MENÜ")) { //peek next element
+            } else if (it.next().text().trim().startsWith("MENÜ")) { //peek next element
                 it.previous(); //step back in EVERY case
                 break;
             }
@@ -84,19 +84,19 @@ public class RaabFactory implements MensaFactory {
         }
         return new Menu(Type.RAAB, title, meals, -1, 0, date, false);
     }
-    
+
     private static String tidyTitle(String title) {
         StringBuilder sb = new StringBuilder(title.toLowerCase());
         sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
         sb.setLength(sb.length() - 1);
         return sb.toString();
     }
-    
+
     private static String parseDate(String rawDate) {
         try {
             Date d = TIME_FORMAT.parse(rawDate.split(" ", 2)[1]);
             return TimeUtil.dateToIso(d);
-        } catch(ParseException ex) {
+        } catch (ParseException ex) {
             throw new MensaParseException(ex);
         }
     }

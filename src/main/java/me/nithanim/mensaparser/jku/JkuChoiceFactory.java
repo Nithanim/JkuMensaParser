@@ -33,51 +33,51 @@ public class JkuChoiceFactory implements MensaFactory {
     public List<Menu> newMensa() throws IOException {
         Document doc = sourceFactory.getAsHtml();
         Elements offers = doc.select("html body div#wrapper div#menu");
-        
-        for(Element offer : offers) {
-            if(offer.select(">h2").first().text().startsWith("Choice")) {
+
+        for (Element offer : offers) {
+            if (offer.select(">h2").first().text().startsWith("Choice")) {
                 Element e = offer.select(">.menu-item > table > tbody > tr > td").first();
                 return parseChoice(e);
             }
         }
         throw new MensaParseException("Unable to find choice menus!");
     }
-    
+
     private static List<Menu> parseChoice(Element e) {
         ArrayList<Menu> menus = new ArrayList<Menu>();
         Elements rawMenus = e.select("p");
-        
+
         String date = handleWhitespaces(rawMenus.remove(0).text());
         date = JkuUtil.parseTimeChoice(date);
-        
+
         ensureParent(e, rawMenus);
         deleteEmpty(rawMenus);
-        for(Element rawmenu : rawMenus) {
+        for (Element rawmenu : rawMenus) {
             mergeTitle(rawmenu);
-            
-            if(rawmenu.textNodes().isEmpty()) { //ignore "menus" without text
+
+            if (rawmenu.textNodes().isEmpty()) { //ignore "menus" without text
                 continue; //ignore
             }
-            
+
             Element subType = rawmenu.child(0);
             subType.remove();
             handleWhitespaces(subType);
-            
+
             List<Meal> meals = new ArrayList<Meal>(3);
             List<List<Node>> rawMeals = splitMealsOfMenu(rawmenu);
-            
+
             boolean vegetarian = false;
-            for(List<Node> rawMeal : rawMeals) {
+            for (List<Node> rawMeal : rawMeals) {
                 handleWhitespaces(rawMeal);
                 deleteEmpty(rawMeal);
                 removePointlessBrTags(rawMeal);
-                if(rawMeal.isEmpty()) {
+                if (rawMeal.isEmpty()) {
                     continue;
                 }
-                
+
                 String mealText = mergeText(rawMeal);
                 //TODO extract vegetarian from image in rawMeal or from text
-                
+
                 Matcher matcher = MEAL_PATTERN.matcher(mealText);
                 int price;
                 if (matcher.matches()) {
@@ -96,22 +96,22 @@ public class JkuChoiceFactory implements MensaFactory {
             }
             menus.add(new Menu(Type.CHOICE, subType.text(), meals, -1, 0, date, vegetarian));
         }
-        
+
         return menus;
     }
-    
+
     private static String mergeText(List<Node> nodes) {
         ListIterator<Node> it = nodes.listIterator();
-        if(it.hasNext()) {
-            TextNode base = (TextNode)it.next();
+        if (it.hasNext()) {
+            TextNode base = (TextNode) it.next();
             base.text(handleWhitespaces(base.text()));
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 Node next = it.next();
-                if(next instanceof TextNode) {
+                if (next instanceof TextNode) {
                     base.text(
-                            base.text()
-                            + " "
-                            + handleWhitespaces(((TextNode)next).text()));
+                        base.text()
+                        + " "
+                        + handleWhitespaces(((TextNode) next).text()));
                     next.remove();
                     it.remove();
                 }
@@ -120,16 +120,16 @@ public class JkuChoiceFactory implements MensaFactory {
         }
         return null;
     }
-    
+
     private static List<List<Node>> splitMealsOfMenu(Element menu) {
         List<List<Node>> meals = new ArrayList<List<Node>>();
         Iterator<Node> collector = menu.childNodes().iterator();
         ArrayList<Node> currentMeal = new ArrayList<Node>();
-        while(collector.hasNext()) {
+        while (collector.hasNext()) {
             Node next = collector.next();
-            if(next instanceof Element && ((Element)next).tagName().equals("br")) {
+            if (next instanceof Element && ((Element) next).tagName().equals("br")) {
                 meals.add(currentMeal);
-                if(collector.hasNext()) {
+                if (collector.hasNext()) {
                     currentMeal = new ArrayList<Node>();
                 }
             } else {
@@ -137,22 +137,22 @@ public class JkuChoiceFactory implements MensaFactory {
             }
         }
         meals.add(currentMeal);
-        
+
         Iterator<List<Node>> cleaner = meals.iterator();
-        while(cleaner.hasNext()) {
-            if(cleaner.next().isEmpty()) {
+        while (cleaner.hasNext()) {
+            if (cleaner.next().isEmpty()) {
                 cleaner.remove();
             }
         }
         return meals;
     }
-    
+
     private static void ensureParent(Element root, Elements elements) {
         Element last = null;
-        for(Element p : elements) {
-            if(p.parent() != root) {
+        for (Element p : elements) {
+            if (p.parent() != root) {
                 p.remove();
-                if(last != null) {
+                if (last != null) {
                     root.after(last);
                 } else {
                     root.before(root.child(0));
@@ -161,37 +161,38 @@ public class JkuChoiceFactory implements MensaFactory {
             last = p;
         }
     }
-    
+
     private static void moveImagesToEnd(Element root) {
         Elements images = root.select("img");
-        
-        for(Element image : images) {
+
+        for (Element image : images) {
             image.remove();
         }
-        for(Element image : images) {
+        for (Element image : images) {
             root.appendChild(image);
         }
     }
-    
+
     /**
-     * Searches for &lt;strong&gt;s (which are assumed to be titles) and
-     * merges all directly following into a single &lt;strong&gt;s while
-     * deleting everyting before. <br/>
-     * This is a workaround for "&lt;strong&gt;P&lt;/strong&gt;&lt;strong&gt;izza/Pasta&lt;/strong&gt;"
-     * 
-     * @param it 
+     * Searches for &lt;strong&gt;s (which are assumed to be titles) and merges
+     * all directly following into a single &lt;strong&gt;s while deleting
+     * everyting before. <br/>
+     * This is a workaround for
+     * "&lt;strong&gt;P&lt;/strong&gt;&lt;strong&gt;izza/Pasta&lt;/strong&gt;"
+     *
+     * @param it
      */
     private static void mergeTitle(Element menu) {
         ArrayList<Node> nodes = new ArrayList<Node>(menu.childNodes());
-        
+
         ListIterator<Node> it = nodes.listIterator();
         //find base
         Element base = null;
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Node node = it.next();
-            if(node instanceof Element && ((Element)node).tagName().equals("strong")) {
-                Element next = (Element)node;
-                if(next.tagName().equals("strong")) {
+            if (node instanceof Element && ((Element) node).tagName().equals("strong")) {
+                Element next = (Element) node;
+                if (next.tagName().equals("strong")) {
                     base = next;
                     break;
                 }
@@ -201,14 +202,14 @@ public class JkuChoiceFactory implements MensaFactory {
                 it.remove();
             }
         }
-        if(base == null) {
+        if (base == null) {
             throw new MensaParseException("Unable to merge title", menu);
         }
         //merge following
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Node next = it.next();
-            if(next instanceof Element && ((Element)next).tagName().equals("strong")) {
-                base.text(base.text() + ((Element)next).text());
+            if (next instanceof Element && ((Element) next).tagName().equals("strong")) {
+                base.text(base.text() + ((Element) next).text());
                 next.remove();
                 it.remove();
             } else {
@@ -216,12 +217,12 @@ public class JkuChoiceFactory implements MensaFactory {
             }
         }
     }
-    
+
     private static void removePointlessBrTags(List<Node> nodes) {
         ListIterator<Node> it = nodes.listIterator(nodes.size());
-        while(it.hasPrevious()) {
+        while (it.hasPrevious()) {
             Node prev = it.previous();
-            if(prev instanceof Element && ((Element)prev).tagName().equals("br")) {
+            if (prev instanceof Element && ((Element) prev).tagName().equals("br")) {
                 prev.remove();
                 it.remove();
             } else {
@@ -229,60 +230,60 @@ public class JkuChoiceFactory implements MensaFactory {
             }
         }
     }
-    
+
     private static void deleteEmpty(Collection<Node> nodes) {
         Iterator<Node> it = nodes.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Node node = it.next();
-            if((node instanceof TextNode && ((TextNode) node).isBlank()) || isEmpty(node)) {
+            if ((node instanceof TextNode && ((TextNode) node).isBlank()) || isEmpty(node)) {
                 node.remove();
                 it.remove();
             }
         }
     }
-    
+
     private static void deleteEmpty(Elements elements) {
         Iterator<Element> it = elements.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Element e = it.next();
-            if(isEmpty(e)) {
+            if (isEmpty(e)) {
                 e.remove();
                 it.remove();
             }
         }
     }
-    
+
     private static void handleWhitespaces(Collection<Node> nodes) {
-        for(Node node : nodes) {
+        for (Node node : nodes) {
             handleWhitespaces(node);
         }
     }
-    
+
     private static void handleWhitespaces(Node node) {
-        if(isTextbasedNode(node)) {
-            if(node instanceof TextNode) {
+        if (isTextbasedNode(node)) {
+            if (node instanceof TextNode) {
                 TextNode tn = (TextNode) node;
                 tn.text(handleWhitespaces(tn.text()));
-            } else if(node instanceof Element) {
+            } else if (node instanceof Element) {
                 Element e = (Element) node;
                 e.text(handleWhitespaces(e.text()));
             }
         }
     }
-    
+
     private static boolean isTextbasedNode(Node node) {
-        return !(node instanceof Element && ((Element)node).tagName().equals("img"));
+        return !(node instanceof Element && ((Element) node).tagName().equals("img"));
     }
-    
+
     private static String handleWhitespaces(String s) {
         return s.replace("\u00a0" /*&nbsp*/, " ").trim();
     }
-    
+
     private static boolean isEmpty(Node node) {
-        if(node instanceof TextNode) {
-            return ((TextNode)node).text().replace("\u00a0", "").trim().length() == 0;
+        if (node instanceof TextNode) {
+            return ((TextNode) node).text().replace("\u00a0", "").trim().length() == 0;
         } else {
-            return ((Element)node).text().replace("\u00a0", "").trim().length() == 0;
+            return ((Element) node).text().replace("\u00a0", "").trim().length() == 0;
         }
     }
 }
