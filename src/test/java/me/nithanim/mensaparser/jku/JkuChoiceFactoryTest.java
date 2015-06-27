@@ -3,6 +3,7 @@ package me.nithanim.mensaparser.jku;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
@@ -78,18 +79,33 @@ public class JkuChoiceFactoryTest extends ParserTest {
         getSourceFactory().setFile("suesshaus-doubleprice.htm");
         List<Menu> menus = newMensa();
         
-        int counter = 0;
-        Menu suesshaus = null;
-        for(Menu menu : menus) {
-            if(menu.getSubtype().equals("Süßhaus")) {
-                counter++;
-                suesshaus = menu;
-            }
-        }
-        assertNotNull("No Süßhaus found", suesshaus);
-        assertEquals(1, counter);
+        Menu suesshaus = getSpecificMenu("Süßhaus", menus);
         assertEquals(1, suesshaus.getMeals().size());
         assertEquals(-1, suesshaus.getPrice());
         assertEquals(-2, suesshaus.getMeals().get(0).getPrice());
+    }
+    
+    @Test(expected = NoSuchElementException.class)
+    public void testSuesshausVeganEmpty() throws Exception {
+        getSourceFactory().setFile("suesshaus-vegan-empty.htm");
+        List<Menu> menus = newMensa();
+        Menu suesshaus = getSpecificMenu("Süßhaus", menus);
+    }
+    
+    private Menu getSpecificMenu(String subtype, List<Menu> menus) {
+        int counter = 0;
+        Menu needle = null;
+        for(Menu menu : menus) {
+            if(menu.getSubtype().equals("Süßhaus")) {
+                counter++;
+                needle = menu;
+            }
+        }
+        if(needle == null) {
+            throw new NoSuchElementException("No " + subtype + " found");
+        } else if(counter != 1) {
+            throw new IllegalStateException("More than one " + subtype + " found");
+        }
+        return needle;
     }
 }

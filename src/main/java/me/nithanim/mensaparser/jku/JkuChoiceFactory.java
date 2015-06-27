@@ -55,7 +55,7 @@ public class JkuChoiceFactory implements MensaFactory {
         for(Element rawmenu : rawMenus) {
             mergeTitle(rawmenu);
             
-            if(rawmenu.childNodeSize() <= 1) { //when at most title exists
+            if(rawmenu.textNodes().isEmpty()) { //ignore "menus" without text
                 continue; //ignore
             }
             
