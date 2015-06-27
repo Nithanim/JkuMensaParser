@@ -29,7 +29,7 @@ public class JkuChoiceFactoryTest extends ParserTest {
                 Arrays.asList(new Meal[] {
                     new Meal("Mensa Burger", 460)
                 }), -1, 0, "2015-05-29", false));
-        expected.add(new Menu(Type.CHOICE, "SnackEintopf",
+        expected.add(new Menu(Type.CHOICE, "Eintopf",
                 Arrays.asList(new Meal[] {
                     new Meal("Gebackene Tintenfischringe mit Karotffelsalat und Sauce Tartare", 510),
                 }), -1, 0, "2015-05-29", false));
@@ -55,6 +55,8 @@ public class JkuChoiceFactoryTest extends ParserTest {
                     new Meal("Topfen-Marillenstrudel mit Vanillesauce und Fruchtcocktail 2,40/4,80 Euro", -2),
                 }), -1, 0, "2015-05-29", false));
         
+        System.out.println(Arrays.toString(expected.toArray()));
+        System.out.println(Arrays.toString(actual.toArray()));
         ParserTestUtil.assertMenuListEquals(expected, actual);
     }
     
