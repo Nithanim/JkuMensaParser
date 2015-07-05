@@ -1,6 +1,7 @@
 package me.nithanim.mensaparser;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
@@ -14,8 +15,8 @@ import me.nithanim.mensaparser.raab.RaabFactory;
 import me.nithanim.mensaparser.raab.RaabSourceFactory;
 
 public class MainFactory {
-    public static List<Menu> newMain(Type type) throws IOException {
-        return getFactoryForType(type).newMensa();
+    public static List<Menu> newMain(Type type, Collection<MensaParseException> exceptions) throws IOException {
+        return getFactoryForType(type).newMensa(exceptions);
     }
 
     private static MensaFactory getFactoryForType(Type type) {

@@ -30,20 +30,20 @@ public class JkuChoiceFactory implements MensaFactory {
     }
 
     @Override
-    public List<Menu> newMensa() throws IOException {
+    public List<Menu> newMensa(Collection<MensaParseException> exceptions) throws IOException {
         Document doc = sourceFactory.getAsHtml();
         Elements offers = doc.select("html body div#wrapper div#menu");
 
         for (Element offer : offers) {
             if (offer.select(">h2").first().text().startsWith("Choice")) {
                 Element e = offer.select(">.menu-item > table > tbody > tr > td").first();
-                return parseChoice(e);
+                return parseChoice(e, exceptions);
             }
         }
         throw new MensaParseException("Unable to find choice menus!");
     }
 
-    private static List<Menu> parseChoice(Element e) {
+    private static List<Menu> parseChoice(Element e, Collection<MensaParseException> exceptions) {
         ArrayList<Menu> menus = new ArrayList<Menu>();
         Elements rawMenus = e.select("p");
 
@@ -53,48 +53,54 @@ public class JkuChoiceFactory implements MensaFactory {
         ensureParent(e, rawMenus);
         deleteEmpty(rawMenus);
         for (Element rawmenu : rawMenus) {
-            mergeTitle(rawmenu);
+            try {
+                mergeTitle(rawmenu);
 
-            if (rawmenu.textNodes().isEmpty()) { //ignore "menus" without text
-                continue; //ignore
-            }
-
-            Element subType = rawmenu.child(0);
-            subType.remove();
-            handleWhitespaces(subType);
-
-            List<Meal> meals = new ArrayList<Meal>(3);
-            List<List<Node>> rawMeals = splitMealsOfMenu(rawmenu);
-
-            boolean vegetarian = false;
-            for (List<Node> rawMeal : rawMeals) {
-                handleWhitespaces(rawMeal);
-                deleteEmpty(rawMeal);
-                removePointlessBrTags(rawMeal);
-                if (rawMeal.isEmpty()) {
-                    continue;
+                if (rawmenu.textNodes().isEmpty()) { //ignore "menus" without text
+                    continue; //ignore
                 }
 
-                String mealText = mergeText(rawMeal);
-                //TODO extract vegetarian from image in rawMeal or from text
+                Element subType = rawmenu.child(0);
+                subType.remove();
+                handleWhitespaces(subType);
 
-                Matcher matcher = MEAL_PATTERN.matcher(mealText);
-                int price;
-                if (matcher.matches()) {
-                    mealText = matcher.group(1).trim();
-                    String priceRaw = matcher.group(2).trim();
-                    price = Integer.parseInt(priceRaw.replace(",", ""));
-                } else {
-                    if (mealText.matches("-+")) { //subtype closed
+                List<Meal> meals = new ArrayList<Meal>(3);
+                List<List<Node>> rawMeals = splitMealsOfMenu(rawmenu);
+
+                boolean vegetarian = false;
+                for (List<Node> rawMeal : rawMeals) {
+                    handleWhitespaces(rawMeal);
+                    deleteEmpty(rawMeal);
+                    removePointlessBrTags(rawMeal);
+                    if (rawMeal.isEmpty()) {
                         continue;
-                    } else {
-                        //throw new MensaParseException("Unable to parse " + menuElement.toString());
-                        price = -2;
                     }
+
+                    String mealText = mergeText(rawMeal);
+                    //TODO extract vegetarian from image in rawMeal or from text
+
+                    Matcher matcher = MEAL_PATTERN.matcher(mealText);
+                    int price;
+                    if (matcher.matches()) {
+                        mealText = matcher.group(1).trim();
+                        String priceRaw = matcher.group(2).trim();
+                        price = Integer.parseInt(priceRaw.replace(",", ""));
+                    } else {
+                        if (mealText.matches("-+")) { //subtype closed
+                            continue;
+                        } else {
+                            //throw new MensaParseException("Unable to parse " + menuElement.toString());
+                            price = -2;
+                        }
+                    }
+                    meals.add(new Meal(mealText, price));
                 }
-                meals.add(new Meal(mealText, price));
+                menus.add(new Menu(Type.CHOICE, subType.text(), meals, -1, 0, date, vegetarian));
+            } catch (MensaParseException ex) {
+                exceptions.add(ex);
+            } catch (Exception ex) {
+                exceptions.add(new MensaParseException(ex));
             }
-            menus.add(new Menu(Type.CHOICE, subType.text(), meals, -1, 0, date, vegetarian));
         }
 
         return menus;

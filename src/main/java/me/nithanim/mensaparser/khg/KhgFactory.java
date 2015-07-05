@@ -3,6 +3,7 @@ package me.nithanim.mensaparser.khg;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -11,6 +12,7 @@ import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
 import me.nithanim.mensaparser.MensaFactory;
+import me.nithanim.mensaparser.MensaParseException;
 import me.nithanim.mensaparser.SourceFactory;
 import me.nithanim.mensaparser.util.TimeUtil;
 import org.jsoup.nodes.Document;
@@ -28,7 +30,7 @@ public class KhgFactory implements MensaFactory {
     }
 
     @Override
-    public List<Menu> newMensa() throws IOException {
+    public List<Menu> newMensa(Collection<MensaParseException> exceptions) throws IOException { //TODO handle exceptions
         Document doc = sourceFactory.getAsHtml();
         Elements content = doc.select("html body div#total-container div#container div#middle-wrapper div#content div.post_content");
 

@@ -2,11 +2,13 @@ package me.nithanim.mensaparser.jku;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import me.nithanim.mensaapi.Meal;
 import me.nithanim.mensaapi.Menu;
 import me.nithanim.mensaapi.Type;
 import me.nithanim.mensaparser.MensaFactory;
+import me.nithanim.mensaparser.MensaParseException;
 import me.nithanim.mensaparser.SourceFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,7 +23,7 @@ public class JkuClassicFactory implements MensaFactory {
     }
 
     @Override
-    public List<Menu> newMensa() throws IOException {
+    public List<Menu> newMensa(Collection<MensaParseException> exceptions) throws IOException {
         Document doc = sourceFactory.getAsHtml();
 
         List<Menu> menus = new ArrayList<Menu>(2 * 5);
@@ -32,7 +34,13 @@ public class JkuClassicFactory implements MensaFactory {
                 int price = title.endsWith("1") ? 365 : 500;
                 int oehBonus = title.endsWith("1") ? 115 : 80;
                 String menuesAsXmlString = offer.select("> description").first().text();
-                menus.addAll(parseMenus(Jsoup.parse(menuesAsXmlString), title, price, oehBonus));
+                try {
+                    menus.addAll(parseMenus(Jsoup.parse(menuesAsXmlString), title, price, oehBonus));
+                } catch(MensaParseException ex) {
+                    exceptions.add(ex);
+                } catch(Exception ex) {
+                    exceptions.add(new MensaParseException(ex));
+                }
             }
         }
         return menus;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
@@ -29,7 +30,7 @@ public class RaabFactory implements MensaFactory {
     }
 
     @Override
-    public List<Menu> newMensa() throws IOException {
+    public List<Menu> newMensa(Collection<MensaParseException> exceptions) throws IOException { //TODO handle exceptions
         Document doc = sourceFactory.getAsHtml();
         Elements trs = doc.select("html body div#content table tbody tr td table#speiseplan tbody tr");
 

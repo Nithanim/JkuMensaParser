@@ -85,6 +85,13 @@ public class JkuChoiceFactoryTest extends ParserTest {
         List<Menu> menus = newMensa();
         getSpecificMenu("Süßhaus", menus);
     }
+    
+    @Test
+    public void testGrillElementInNewP() throws Exception {
+        getSourceFactory().setFile("grill-element-in-new-p.htm");
+        newMensa();
+        assertEquals(1, exceptions.size());
+    }
 
     private Menu getSpecificMenu(String subtype, List<Menu> menus) {
         int counter = 0;
