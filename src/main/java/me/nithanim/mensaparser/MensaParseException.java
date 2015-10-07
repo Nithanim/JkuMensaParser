@@ -28,6 +28,11 @@ public class MensaParseException extends RuntimeException {
         this.node = node;
     }
 
+    public MensaParseException(String message, Throwable cause, Node node) {
+        super(message, cause);
+        this.node = node;
+    }
+
     /**
      * Sets the {@link Document} on which the parse error occured.
      *
