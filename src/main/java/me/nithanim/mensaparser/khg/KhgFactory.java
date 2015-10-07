@@ -20,6 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class KhgFactory implements MensaFactory {
+    private static final String CSS_PATH = "html body div#heightCalcBox.print div#mainBox.print div.container.print div#contentBox.print div.article.list.articleList div.contentSection.firstSection div.listContent div.modTeaser div.swslang";
     private static final Pattern DATE_PATTERN = Pattern.compile("^[^\\d]+(\\d{1,2})\\.(\\d{1,2})\\.[\\-– ]+\\d{1,2}\\.\\d{1,2}\\.(\\d{4}) *$");
     private static final String[] MENU_NAMES = {"MENÜ 1", "MENÜ 2"};
 
@@ -32,12 +33,14 @@ public class KhgFactory implements MensaFactory {
     @Override
     public List<Menu> newMensa(Collection<MensaParseException> exceptions) throws IOException { //TODO handle exceptions
         Document doc = sourceFactory.getAsHtml();
-        Elements content = doc.select("html body div#total-container div#container div#middle-wrapper div#content div.post_content");
+        Element content = doc.select(CSS_PATH).first();
+
+        Elements metas = content.select(">p");
 
         List<Menu> menus = new ArrayList<Menu>();
 
-        Calendar base = parseDate(content.select(">div").first());
-        Calendar currDate = (Calendar) base.clone();
+        Calendar baseDate = parseDate(metas.get(3).textNodes().get(1).text());
+        Calendar currDate = (Calendar) baseDate.clone();
         int counter = 0;
         for (Element e : content.select(">table > tbody > tr")) {
             Elements childs = e.select(">td");
@@ -55,16 +58,22 @@ public class KhgFactory implements MensaFactory {
 
     private static Menu parseMenu(String name, Elements es, String date) {
         List<Meal> meals = parseMeals(es.get(0).text());
-
-        int price;
+        int priceFull;
+        try {
+            String priceRaw = es.get(2).text().trim();
+            priceFull = Integer.parseInt(priceRaw.replace(",", ""));
+        } catch (NumberFormatException ex) {
+            priceFull = -2;
+        }
+        int priceCheap;
         try {
             String priceRaw = es.get(1).text().trim();
-            price = Integer.parseInt(priceRaw.replace(",", ""));
+            priceCheap = Integer.parseInt(priceRaw.replace(",", ""));
         } catch (NumberFormatException ex) {
-            price = -2;
+            priceCheap = -2;
         }
 
-        return new Menu(Type.KHG, name, meals, price, 115, date, false);
+        return new Menu(Type.KHG, name, meals, priceFull, priceFull - priceCheap, date, false);
     }
 
     private static List<Meal> parseMeals(String text) {
@@ -76,8 +85,8 @@ public class KhgFactory implements MensaFactory {
         return result;
     }
 
-    private static Calendar parseDate(Element e) {
-        Matcher matcher = DATE_PATTERN.matcher(e.text());
+    private static Calendar parseDate(String s) {
+        Matcher matcher = DATE_PATTERN.matcher(s);
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00"));
         if (matcher.matches()) {
             int y = Integer.parseInt(matcher.group(3));
